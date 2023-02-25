@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="assets/css/style.css">
+    <title>Timer</title>
+</head>
+<body>
+    <section class="container">
+        <h1 class="titulo">Timer</h1>
+      
+        <div class="timer">
+            <p id="watchScreen">00:00:00</p>            
+        </div>
+        <div class="btns">
+            <input id="btIniciar" type="button" value="Iniciar">
+            <input id="btPausar" type="button" value="Pausar">
+            <input id="btZerar" type="button" value="Zerar">
+        </div>
+    </section>
+
+    <section class="container">
+        <h1 class="titulo">Timer Regressivo</h1>
+      
+        <div class="timer">
+            <p id="watchScreenRegressive">00:00:00</p>  
+            <input type="text" name="" id="inTime">          
+        </div>
+        <div class="btns">
+            <input id="btStartCount" type="button" value="Iniciar">
+            <input id="btPauseRegressive" type="button" value="Pausar">
+            <input id="resetRegressive" type="button" value="Zerar">
+        </div>
+    </section>
+
+    <script src="assets/js/mainRefatorado.js"></script>
+</body>
+</html>
