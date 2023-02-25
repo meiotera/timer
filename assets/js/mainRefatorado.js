@@ -1,26 +1,21 @@
+
 (function () {
     let time;
+    let secondsRegressive;
     let seconds = 0;
     let inTime = document.getElementById('inTime')
-    let timeRegressive = Number(inTime.value);
+    let execute = false;
     // Display
     const watchScreen = document.getElementById('watchScreen');
 
     // Display regressive
     const watchScreenRegressive = document.getElementById('watchScreenRegressive');
 
-    function getDate(sec) {
-        let date = new Date(sec * 1000);
+    function getDate(num) {
+        let date = new Date(num * 1000);
         return date.toLocaleTimeString('pt-BR', {
             timeZone: 'GMT',
         });
-    }
-
-
-    function regressive () {
-        watchScreenRegressive.innerText = getDate(timeRegressive);
-
-        
     }
 
     // Referencia aos botoes
@@ -45,15 +40,28 @@
 
         //-----------------------------------------//
         if (e.target.id.includes('btStartCount')) {
+            let timeRegressive = Number(inTime.value);
+            let min = timeRegressive * 60;
 
+            execute = true;           
+
+            secondsRegressive = setInterval(function () {
+                min--;
+                if (min === 0) {
+                    clearInterval(secondsRegressive);
+                }
+                watchScreenRegressive.innerText = getDate(min);
+            }, 1000);           
         }
 
         if (e.target.id.includes('btPauseRegressive')) {
-
+            clearInterval(secondsRegressive);
         }
 
         if (e.target.id.includes('resetRegressive')) {
-
+            watchScreenRegressive.innerText = '00:00:00'
+            timeRegressive = 0;
+            clearInterval(secondsRegressive);
         }
     });
 })()
