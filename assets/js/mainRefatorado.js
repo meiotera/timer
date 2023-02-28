@@ -2,6 +2,7 @@
 (function () {
     let time;
     let seconds = 0;
+    let executeRegressive = false;
 
     // Display
     const watchScreen = document.getElementById('watchScreen');
@@ -34,8 +35,7 @@
             clearInterval(time);
             seconds = 0;
             watchScreen.innerText = '00:00:00';
-        }
-        //-----------------------------------------//
+        }       
     });
 
     function regressive() {
@@ -44,7 +44,9 @@
         let timeRegressive = Number(inTime.value);
         let min = timeRegressive * 60;
 
-        if(inTime.value === '' || !Number(inTime.value)) {
+        if (executeRegressive) return;
+
+        if (inTime.value === '' || !Number(inTime.value)) {
             console.log('use um numero');
             inTime.focus();
             inTime.value = '';
@@ -53,9 +55,10 @@
 
         inTime.value = '';
 
-        let remainingTime = min
+        let remainingTime = min;
 
         function updateRegressive() {
+            executeRegressive = true;
             remainingTime--;
             if (remainingTime === 0) {
                 clearInterval(secondsRegressive);
@@ -78,8 +81,8 @@
 
             if (el.id.includes('resetRegressive')) {
                 clearInterval(secondsRegressive);
-                watchScreenRegressive.innerText = '00:00:00';                
-                location.reload();              
+                watchScreenRegressive.innerText = '00:00:00';
+                location.reload();
             }
 
             if (el.id.includes('btContinueRegressive')) {
@@ -93,5 +96,5 @@
     }
 
     let btStartCount = document.getElementById('btStartCount');
-    btStartCount.addEventListener('click', regressive)
+    btStartCount.addEventListener('click', regressive);
 })()
