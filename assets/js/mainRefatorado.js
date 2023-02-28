@@ -1,10 +1,8 @@
 
 (function () {
     let time;
-    let secondsRegressive;
     let seconds = 0;
-    let inTime = document.getElementById('inTime')
-    let execute = false;
+
     // Display
     const watchScreen = document.getElementById('watchScreen');
 
@@ -37,31 +35,63 @@
             seconds = 0;
             watchScreen.innerText = '00:00:00';
         }
-
         //-----------------------------------------//
-        if (e.target.id.includes('btStartCount')) {
-            let timeRegressive = Number(inTime.value);
-            let min = timeRegressive * 60;
-
-            execute = true;           
-
-            secondsRegressive = setInterval(function () {
-                min--;
-                if (min === 0) {
-                    clearInterval(secondsRegressive);
-                }
-                watchScreenRegressive.innerText = getDate(min);
-            }, 1000);           
-        }
-
-        if (e.target.id.includes('btPauseRegressive')) {
-            clearInterval(secondsRegressive);
-        }
-
-        if (e.target.id.includes('resetRegressive')) {
-            watchScreenRegressive.innerText = '00:00:00'
-            timeRegressive = 0;
-            clearInterval(secondsRegressive);
-        }
     });
+
+    function regressive() {
+        let secondsRegressive;
+        let inTime = document.getElementById('inTime');
+        let timeRegressive = Number(inTime.value);
+        let min = timeRegressive * 60;
+
+        if(inTime.value === '' || !Number(inTime.value)) {
+            console.log('use um numero');
+            inTime.focus();
+            inTime.value = '';
+            return;
+        }
+
+        inTime.value = '';
+
+        let remainingTime = min
+
+        function updateRegressive() {
+            remainingTime--;
+            if (remainingTime === 0) {
+                clearInterval(secondsRegressive);
+            }
+            watchScreenRegressive.innerText = getDate(remainingTime);
+        }
+
+        function startRegressive() {
+            secondsRegressive = setInterval(updateRegressive, 1000);
+        }
+
+        document.addEventListener('click', (e) => {
+            let el = e.target;
+            if (el.id.includes('btPauseRegressive')) {
+                clearInterval(secondsRegressive);
+                el.setAttribute('value', 'Continue');
+                el.setAttribute('id', 'btContinueRegressive');
+                return;
+            }
+
+            if (el.id.includes('resetRegressive')) {
+                clearInterval(secondsRegressive);
+                watchScreenRegressive.innerText = '00:00:00';                
+                location.reload();              
+            }
+
+            if (el.id.includes('btContinueRegressive')) {
+                secondsRegressive = setInterval(updateRegressive, 1000);
+                el.setAttribute('value', 'Pausar');
+                el.setAttribute('id', 'btPauseRegressive');
+            }
+        });
+
+        startRegressive();
+    }
+
+    let btStartCount = document.getElementById('btStartCount');
+    btStartCount.addEventListener('click', regressive)
 })()
